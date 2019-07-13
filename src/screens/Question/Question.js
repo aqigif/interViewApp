@@ -20,11 +20,13 @@ class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menu: "Text"
+      menu: "Text",
+      number: 1
     };
   }
   componentDidMount(){
-    this.props.getQuestion(1)
+    let number = this.state.number
+    this.props.getQuestion(number)
   }
   render() {
     console.log(this.props.quest)
@@ -32,19 +34,12 @@ class Question extends Component {
     let prev, now, next;
     if (menu == "text") {
       now = <TextQuestion quest_id={this.props.quest.data.id} question={this.props.quest.data.description}/>;
-      next = "Choice";
     } else if (menu == "choice") {
-      prev = "Text";
       now = <MultiChoiceQuestion />;
-      next = "Select";
     } else if (menu == "select") {
-      prev = "Choice";
       now = <MultiSelectQuestion />;
-      next = "Camera";
     } else if (menu == "camera") {
-      prev = "Select";
       now = <Text>it should be camera</Text>;
-      next = "Text";
     }
     return this.props.quest.isLoading === true ? (
       <View
@@ -70,8 +65,8 @@ class Question extends Component {
             justifyContent: "space-between"
           }}
         >
-          <Text style={{ color: "#fff" }}>Number</Text>
-          <Text style={{ color: "#fff" }}>Time</Text>
+          <Text style={{ color: "#fff" }}>Number : {this.props.quest.data.number}</Text>
+          <Text style={{ color: "#fff" }}>Time : {this.props.quest.data.timer}</Text>
         </View>
         <View style={styles.body}>
           {now}
@@ -82,7 +77,7 @@ class Question extends Component {
                 styles.buttonControllerContainer,
                 styles.controllerButton
               ]}
-              onPress={() => this.setState({ menu: prev })}
+              onPress={() => this.setState({number: this.state.number--})}
             >
               <Text style={styles.conrollerText}>Prev</Text>
             </TouchableOpacity>
@@ -96,7 +91,7 @@ class Question extends Component {
                 styles.buttonControllerContainer,
                 styles.controllerButton
               ]}
-              onPress={() => this.setState({ menu: next })}
+              onPress={() => this.setState({ number: this.state.number++ })}
             >
               <Text style={styles.conrollerText}>Next</Text>
             </TouchableOpacity>
