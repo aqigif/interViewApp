@@ -14,11 +14,24 @@ export default class MultiSelectQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answers: []
+      answers: [],
+      answered: null
     };
   }
   componentDidMount(){
     this._getOption()
+  }
+  _choosing=async()=>{
+    let array = []
+    const options = this.state.answers
+    for(let index=0;index < options.length;index++){
+      if(options[index].isChecked==true){
+        array = array.concat(options[index].value)
+      }
+    }
+    const string = await array.toString();
+    await this.setState({answered:string})
+    this.props.answeringValue(this.state.answered)
   }
   _getOption=async()=>{
     let array = []
@@ -29,13 +42,14 @@ export default class MultiSelectQuestion extends Component {
     }
     await this.setState({answers:array})
   }
-  checkBtnData = (id) => {
+  checkBtnData = async(id) => {
     let answer = this.state.answers
     answer.forEach(answer => {
        if (answer.id === id)
           answer.isChecked =  !answer.isChecked
     })
-    this.setState({answers: answer})
+    await this.setState({answers: answer})
+    this._choosing()
   }
   render() {
     return (

@@ -15,11 +15,15 @@ export default class MultiChoiceQuestion extends Component {
     super(props);
     this.state = {
       answers: [],
-      checked: 0
+      checked: null
     };
   }
   componentDidMount(){
     this._getOption()
+  }
+  _choosing=async(key)=>{
+    await this.setState({ checked: key })
+    this.props.answeringValue(this.state.answers[key])
   }
   _getOption=async()=>{
     const options = this.props.options
@@ -29,7 +33,6 @@ export default class MultiChoiceQuestion extends Component {
     await this.setState({answers:array})
   }
   render() {
-    console.log(this.state.answers+"<= pushed")
     return (
       <View style={styles.quizWrapper}>
         <View style={{marginBottom:20}}>
@@ -39,11 +42,11 @@ export default class MultiChoiceQuestion extends Component {
           return (
             <View key={key}>
               {this.state.checked == key ? (
-                <TouchableOpacity style={styles.btnActive}>
+                <TouchableOpacity style={styles.btnActive} onPress={() => {this.setState({ checked: null });}}>
                   <Text style={styles.textItemActive}>{data}</Text>
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity onPress={() => {this.setState({ checked: key });}}
+                <TouchableOpacity onPress={() => {this._choosing(key);}}
                   style={styles.btn}>
                   <Text style={styles.textItem}>{data}</Text>
                 </TouchableOpacity>

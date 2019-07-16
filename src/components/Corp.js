@@ -14,7 +14,7 @@ export default class Corp extends Component {
     return (
         <View style={styles.corpWrapper}>
           <View style={styles.logo}>
-            <Text style={{ color: "white" }}>Logo</Text>
+            <Text style={{ color: "white", fontSize:18 }}>{"<?>"}</Text>
           </View>
           <Text style={styles.corpName}>aqigif Corp.</Text>
         </View>

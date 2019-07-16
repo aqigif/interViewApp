@@ -12,9 +12,9 @@ import { Container, Content, Header } from "native-base";
 export default class Instructions extends Component {
   render() {
     return (
-          <View>
+          <View style={{flexWrap:'wrap', justifyContent:'center', alignItems:'center', paddingHorizontal:20}}>
             <Text style={styles.instructionText}>Instructions :</Text>
-            <Text style={styles.instructionTextDetail}>(...)</Text>
+            <Text style={styles.instructionTextDetail}>Answer it wisely and Quickly, each question has only once answer and one minute. Take a breath and enjoyyy</Text>
             <Text style={styles.instructionTextDetail}>Questions Type:</Text>
             <View style={styles.questionsTypeWrapper}>
               <Text style={styles.questionsType}>1. Multiple Choice</Text>
@@ -22,9 +22,6 @@ export default class Instructions extends Component {
               <Text style={styles.questionsType}>3. Multiple Select</Text>
               <Text style={styles.questionsType}>4. Video Interview</Text>
             </View>
-            <Text style={styles.instructionTextDetail}>
-              Questions Total: (total)
-            </Text>
           </View>
     );
   }
@@ -35,7 +32,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 16
   },
-  instructionTextDetail: { fontSize: 14 },
+  instructionTextDetail: { fontSize: 14, textAlign:'center'},
   questionsTypeWrapper: { justifyContent: "center" },
   questionsType: { fontSize: 14 },
   buttonContainer: {

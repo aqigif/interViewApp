@@ -32,15 +32,16 @@ class Question extends Component {
     this.props.getQuestion(number);
     this.props.navigation.setParams({number});
   }
-  _sendAnswer = async () => {
+  _sendAnswer = async (id) => {
     const valueToken= await AsyncStorage.getItem('token')
     await this.props.answering({
-      question_id: this.props.quest.data.id,
+      question_id: id,
       answer: this.state.answer,
       attachment: this.state.attachment,
       token:valueToken
     });
-    this._nextNumber()
+    await this._nextNumber()
+    this.setState({answer: null})
   };
   _answeringValue = (value) => {
     this.setState({answer: value})
@@ -55,7 +56,7 @@ class Question extends Component {
       this.props.getQuestion(number)
       this.props.navigation.setParams({number});
     }else{
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("Finish");
     }
   };
   static navigationOptions = ({ navigation }) => {
@@ -137,9 +138,9 @@ class Question extends Component {
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <TouchableOpacity
             style={[styles.buttonContainer, styles.startButton]}
-            onPress={() => this._sendAnswer()}
+            onPress={() => this._sendAnswer(quest.id)}
           >
-            <Text style={styles.startText}>{this.state.answer==""?"Next":"Submit"}</Text>
+            <Text style={styles.startText}>{this.state.answer==null?"Next":"Submit"}</Text>
           </TouchableOpacity>
         </View>
       </Container>

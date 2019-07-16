@@ -8,6 +8,7 @@ import Register from "../screens/Register/Register";
 import Loading from "../screens/Loading/Loading";
 import Home from "../screens/Home/Home";
 import Question from '../screens/Question/Question'
+import Finish from '../screens/Finish/Finish'
 
 const LoadingStack = createStackNavigator({
   Loading: {
@@ -42,19 +43,31 @@ const HomeStack = createStackNavigator(
 const QuestStack = createStackNavigator(
   {
     Question:{
-        screen: Question,
-        
+        screen: Question, 
     }
   }
 );
 
+const FinishStack = createStackNavigator(
+  {
+    FinishScreen:{
+        screen: Finish,
+        navigationOptions: ({ navigation }) => ({
+          headerStyle:{backgroundColor:'#251b5a'},
+          headerTitle:'interView',
+          headerTitleStyle:{color:'#fff'}
+        })
+    }
+  }
+);
 const Router = createAppContainer(
   createSwitchNavigator(
     {
       Loading: LoadingStack,
       Register : RegisterStack,
       Home: HomeStack,
-      Quest: QuestStack
+      Quest: QuestStack,
+      Finish: FinishStack
     },
     {
       initialRouteName: "Loading",

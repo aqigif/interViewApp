@@ -32,7 +32,7 @@ export const answering = (value) => ({
     method: "POST",
     url: `${config.BASE_URL}/api/v1/answer`,
     data: {
-      question_id: value.quest_id,
+      question_id: value.question_id,
       answer: value.answer,
       attachment: value.attachment
     },
