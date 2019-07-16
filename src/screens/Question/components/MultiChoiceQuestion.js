@@ -14,15 +14,26 @@ export default class MultiChoiceQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answers: ["Item1", "Item2", "Item3"],
+      answers: [],
       checked: 0
     };
   }
+  componentDidMount(){
+    this._getOption()
+  }
+  _getOption=async()=>{
+    const options = this.props.options
+    const optionSplit = options.split(',')
+    let array = [] 
+    array = array.concat(optionSplit)
+    await this.setState({answers:array})
+  }
   render() {
+    console.log(this.state.answers+"<= pushed")
     return (
       <View style={styles.quizWrapper}>
         <View style={{marginBottom:20}}>
-          <Text>Question</Text>
+          <Text>{this.props.question}</Text>
         </View>
         {this.state.answers.map((data, key) => {
           return (
@@ -60,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor:"#251b5a",
     paddingLeft:20,
     padding:5,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   btn: {
     width: 300,
@@ -78,5 +89,11 @@ const styles = StyleSheet.create({
   textItem:{
     color:'#251b5a',
     fontSize:18
-  }
+  },
+  quizWrapper: {
+    width:'100%',
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical:20,
+  },
 });

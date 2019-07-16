@@ -3,9 +3,7 @@ import {AsyncStorage} from 'react-native';
 const initialState = {
   data: [],
   error: null,
-  field: null,
-  isLoading: false,
-  saveToken: null
+  total:null
 }
 
 function quest(state = initialState, action) {
@@ -24,12 +22,13 @@ function quest(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        data: action.payload.data
+        data: action.payload.data.question,
+        total: action.payload.data.total
       };
     case "GETQUESTION_REJECTED":
       return {
         ...state,
-        error: action.payload.response.data[0].message
+        error: action.payload.response.data.message
       };
 
     default:

@@ -21,7 +21,7 @@ export default class Home extends Component {
           <Text style={styles.welcomeText}>Welcome</Text>
           <Instructions />
 
-          <TouchableOpacity style={[styles.buttonContainer, styles.startButton]} onPress={()=>this.props.navigation.navigate("Question")}>
+          <TouchableOpacity style={[styles.buttonContainer, styles.startButton]} onPress={()=>this.props.navigation.navigate("Quest")}>
             <Text style={styles.startText}>Start ...</Text>
           </TouchableOpacity>
         </View>

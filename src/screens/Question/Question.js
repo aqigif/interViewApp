@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
   Alert,
   StatusBar,
-  Image
+  Image,
+  AsyncStorage
 } from "react-native";
-import { Spinner,Container, Content, Header } from "native-base";
+import { Spinner, Container, Content, Header } from "native-base";
 import TextQuestion from "./components/TextQuestion";
 import MultiChoiceQuestion from "./components/MultiChoiceQuestion";
 import MultiSelectQuestion from "./components/MultiSelectQuestion";
@@ -20,26 +21,83 @@ class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menu: "Text",
+      answer: null,
+      attachment: null,
+      menu: "text",
       number: 1
     };
   }
-  componentDidMount(){
-    let number = this.state.number
-    this.props.getQuestion(number)
+  componentDidMount() {
+    const number = this.state.number
+    this.props.getQuestion(number);
+    this.props.navigation.setParams({number});
+  }
+  _sendAnswer = async () => {
+    const valueToken= await AsyncStorage.getItem('token')
+    await this.props.answering({
+      question_id: this.props.quest.data.id,
+      answer: this.state.answer,
+      attachment: this.state.attachment,
+      token:valueToken
+    });
+    this._nextNumber()
+  };
+  _answeringValue = (value) => {
+    this.setState({answer: value})
+  };
+  _attachingValue = (value) => {
+    this.setState({attachment: value})
+  };
+  _nextNumber = async () => {
+    await this.setState({ number: this.state.number + 1 });
+    if(this.state.number<=this.props.quest.total){
+      const number = await this.state.number
+      this.props.getQuestion(number)
+      this.props.navigation.setParams({number});
+    }else{
+      this.props.navigation.navigate("Home");
+    }
+  };
+  static navigationOptions = ({ navigation }) => {
+    return{
+      headerStyle:{backgroundColor:'#251b5a'},
+      headerTitle:`Question ${navigation.getParam('number')}`,
+      headerTitleStyle:{color:'#fff'}
+    }
   }
   render() {
-    console.log(this.props.quest)
+    console.log(this.state.answer)
     const menu = this.props.quest.data.type;
-    let prev, now, next;
+    const quest = this.props.quest.data;
+    let now, section
     if (menu == "text") {
-      now = <TextQuestion quest_id={this.props.quest.data.id} question={this.props.quest.data.description}/>;
+      section = 1
+      now = <TextQuestion quest_id={quest.id} answeringValue={this._answeringValue} question={quest.description} />;
     } else if (menu == "choice") {
-      now = <MultiChoiceQuestion />;
+      section = 2
+      now = (
+        <MultiChoiceQuestion
+          quest_id={quest.id}
+          answeringValue={this._answeringValue}
+          options={quest.options}
+          question={quest.description}
+        />
+      );
     } else if (menu == "select") {
-      now = <MultiSelectQuestion />;
-    } else if (menu == "camera") {
+      section = 3
+      now = (
+        <MultiSelectQuestion
+          quest_id={quest.id}
+          answeringValue={this._answeringValue}
+          options={quest.options}
+          question={quest.description}
+        />
+      );
+    } else if (menu == "video") {
+      section = 4
       now = <Text>it should be camera</Text>;
+    } else {
+      now = <Text>Nothing</Text>;
     }
     return this.props.quest.isLoading === true ? (
       <View
@@ -65,37 +123,25 @@ class Question extends Component {
             justifyContent: "space-between"
           }}
         >
-          <Text style={{ color: "#fff" }}>Number : {this.props.quest.data.number}</Text>
-          <Text style={{ color: "#fff" }}>Time : {this.props.quest.data.timer}</Text>
+          <Text style={{ color: "#fff" }}>
+            Section {section} of 4
+          </Text>
+          <Text style={{ color: "#fff" }}>
+            Time : {this.props.quest.data.timer}
+          </Text>
         </View>
         <View style={styles.body}>
           {now}
+          {/* {a=b? a=g? a=f?z: y: c : d} */}
         </View>
-          <View style={{ flexDirection: "row", justifyContent:'center' }}>
-            <TouchableOpacity
-              style={[
-                styles.buttonControllerContainer,
-                styles.controllerButton
-              ]}
-              onPress={() => this.setState({number: this.state.number--})}
-            >
-              <Text style={styles.conrollerText}>Prev</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.buttonContainer, styles.startButton]}
-            >
-              <Text style={styles.startText}>Save Answer</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.buttonControllerContainer,
-                styles.controllerButton
-              ]}
-              onPress={() => this.setState({ number: this.state.number++ })}
-            >
-              <Text style={styles.conrollerText}>Next</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <TouchableOpacity
+            style={[styles.buttonContainer, styles.startButton]}
+            onPress={() => this._sendAnswer()}
+          >
+            <Text style={styles.startText}>{this.state.answer==""?"Next":"Submit"}</Text>
+          </TouchableOpacity>
+        </View>
       </Container>
     );
   }
@@ -103,13 +149,15 @@ class Question extends Component {
 
 const mapStateToProps = state => {
   return {
-    quest: state.quest
-  }
-}
+    quest: state.quest,
+    answer: state.answer
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    getQuestion: (number) => dispatch(actionQuestion.getQuestion(number))
+    getQuestion: number => dispatch(actionQuestion.getQuestion(number)),
+    answering: value => dispatch(actionQuestion.answering(value))
   };
 };
 
@@ -127,7 +175,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     paddingHorizontal: 20,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   welcomeText: {
     color: "#251b5a",
@@ -135,7 +183,6 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   buttonContainer: {
-    marginTop: 300,
     height: 40,
     flexDirection: "row",
     justifyContent: "center",

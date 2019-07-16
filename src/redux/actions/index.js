@@ -9,7 +9,7 @@ export const register = (value) => ({
   type: "REGISTER",
   payload: axios({
     method: "POST",
-    url: `http://${config.BASE_URL}:3333/api/auth/register`,
+    url: `${config.BASE_URL}/api/auth/register`,
     data: {
       name: value.name,
       email: value.email,
@@ -22,14 +22,20 @@ export const getQuestion = (number) => ({
   type: "GETQUESTION",
   payload: axios({
     method: "GET",
-    url: `http://${config.BASE_URL}:3333/api/v1/question/number/${number}`
+    url: `${config.BASE_URL}/api/v1/question?number=${number}`
   })
 });
 
-export const answer = (quest_id) => ({
+export const answering = (value) => ({
   type: "ANSWER",
   payload: axios({
     method: "POST",
-    url: `http://${config.BASE_URL}:3333/api/v1/answer`
+    url: `${config.BASE_URL}/api/v1/answer`,
+    data: {
+      question_id: value.quest_id,
+      answer: value.answer,
+      attachment: value.attachment
+    },
+    headers : {'Authorization' : `Bearer ${value.token}`}
   })
 });

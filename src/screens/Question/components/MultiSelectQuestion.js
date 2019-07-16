@@ -14,11 +14,20 @@ export default class MultiSelectQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answers: [
-        { id:1,label: "Item1", isChecked: false },
-        { id:2,label: "Item2", isChecked: false }
-      ]
+      answers: []
     };
+  }
+  componentDidMount(){
+    this._getOption()
+  }
+  _getOption=async()=>{
+    let array = []
+    const options = this.props.options
+    const optionSplit = options.split(',')
+    for(let id=1;id < optionSplit.length;id++){
+      array = array.concat({"id":id,"value":optionSplit[id],"isChecked":false})
+    }
+    await this.setState({answers:array})
   }
   checkBtnData = (id) => {
     let answer = this.state.answers
@@ -32,14 +41,14 @@ export default class MultiSelectQuestion extends Component {
     return (
       <View style={styles.quizWrapper}>
         <View style={{ marginBottom: 20 }}>
-          <Text>Question</Text>
+        <Text>{this.props.question}</Text>
         </View>
         {this.state.answers.map((data, key) => {
           return (
             <View key={key}>
               {data.isChecked == true ? (
                 <TouchableOpacity onPress={() => this.checkBtnData(data.id)} style={styles.btnActive}>
-                  <Text style={styles.textItemActive}>{data.label}</Text>
+                  <Text style={styles.textItemActive}>{data.value}</Text>
                 </TouchableOpacity>
               ) : (
                 
@@ -47,7 +56,7 @@ export default class MultiSelectQuestion extends Component {
                   onPress={() => this.checkBtnData(data.id)}
                   style={styles.btn}
                 >
-                  <Text style={styles.textItem}>{data.label}</Text>
+                  <Text style={styles.textItem}>{data.value}</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -91,5 +100,11 @@ const styles = StyleSheet.create({
   textItem: {
     color: "#251b5a",
     fontSize: 18
-  }
+  },
+  quizWrapper: {
+    width:'100%',
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical:20,
+  },
 });

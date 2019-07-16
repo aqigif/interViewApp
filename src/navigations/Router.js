@@ -27,7 +27,7 @@ const RegisterStack = createStackNavigator({
     },
   });
 
-const AppStack = createStackNavigator(
+const HomeStack = createStackNavigator(
   {
     Home: {
       screen: Home,
@@ -36,18 +36,15 @@ const AppStack = createStackNavigator(
         headerTitle:'interView',
         headerTitleStyle:{color:'#fff'}
       })
-    },
+    }
+  }
+);
+const QuestStack = createStackNavigator(
+  {
     Question:{
         screen: Question,
-        navigationOptions: ({ navigation }) => ({
-          headerStyle:{backgroundColor:'#251b5a',color:'#fff'},
-          headerLeftContainerStyle:{color:'#fff'},
-          headerTintColor: 'white',
-        })
+        
     }
-  },
-  {
-    initialRouteName: "Home"
   }
 );
 
@@ -56,7 +53,8 @@ const Router = createAppContainer(
     {
       Loading: LoadingStack,
       Register : RegisterStack,
-      App: AppStack
+      Home: HomeStack,
+      Quest: QuestStack
     },
     {
       initialRouteName: "Loading",
