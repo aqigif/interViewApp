@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF"
   },
   welcome: {
-    marginTop: 50,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center"
   },

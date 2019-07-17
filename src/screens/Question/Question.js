@@ -16,6 +16,7 @@ import MultiChoiceQuestion from "./components/MultiChoiceQuestion";
 import MultiSelectQuestion from "./components/MultiSelectQuestion";
 import * as actionQuestion from "../../redux/actions/index";
 import { connect } from "react-redux";
+import CountDown from 'react-native-countdown-component';
 
 class Question extends Component {
   constructor(props) {
@@ -124,13 +125,19 @@ class Question extends Component {
             justifyContent: "space-between"
           }}
         >
-          <Text style={{ color: "#fff" }}>
+          <Text style={{ color: "#fff", fontWeight:'bold' }}>
             Section {section} of 4
           </Text>
-          <Text style={{ color: "#fff" }}>
-            Time : {this.props.quest.data.timer}
-          </Text>
-        </View>
+          <CountDown
+            until={this.props.quest.data.timer*60}
+            onFinish={() => this._sendAnswer(quest.id)}
+            size={15}
+            timeToShow={['M', 'S']}
+            timeLabels={{m: null, s: null}}
+            digitStyle={{backgroundColor:"grey"}}
+            digitTxtStyle={{color:"#fff"}}
+          />
+          </View>
         <View style={styles.body}>
           {now}
           {/* {a=b? a=g? a=f?z: y: c : d} */}

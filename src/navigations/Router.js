@@ -9,6 +9,7 @@ import Loading from "../screens/Loading/Loading";
 import Home from "../screens/Home/Home";
 import Question from '../screens/Question/Question'
 import Finish from '../screens/Finish/Finish'
+import Camera from '../screens/Camera/Camera'
 
 const LoadingStack = createStackNavigator({
   Loading: {
@@ -44,6 +45,9 @@ const QuestStack = createStackNavigator(
   {
     Question:{
         screen: Question, 
+    },
+    Camera:{
+      screen: Camera
     }
   }
 );
