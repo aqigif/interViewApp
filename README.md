@@ -8,7 +8,7 @@ It's hiring best employee's application
 
 ### Prerequisites
 
-What things you need to install this software
+What things you need to install this software:
 
 * NodeJs 10.16.0
 * JDK 8
@@ -28,7 +28,17 @@ $ react-native run-android
 $ react-native run-android
 ```
 
-## Built With
+## Deployment
+
+It's deployed at [here](http://interview-u.herokuapp.com/) with heroku.com
+
+## Screenshots
+
+
+
+## Apk's download
+
+It's still not available
 
 ## Authors
 
