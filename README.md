@@ -42,7 +42,7 @@ It's still not available
 
 ## Authors
 
-* **Aqil Gifari** - *Initial work* - [interView](https://github.com/aqigif)
+* **Aqil Gifari** - [interView](https://github.com/aqigif)
 
 ## License
 
