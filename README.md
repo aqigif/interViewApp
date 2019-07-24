@@ -16,10 +16,6 @@ What things you need to install this software
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
 ```
 $ git clone https://github.com/aqigif/interViewApp
 $ npm install
@@ -33,10 +29,6 @@ $ react-native run-android
 ```
 
 ## Built With
-
-## Contributing
-
-## Versioning
 
 ## Authors
 
